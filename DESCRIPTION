@@ -1,0 +1,14 @@
+Package: pknca.reporting
+Title: Assist with reporting PKNCA results
+Version: 0.0.0.9000
+Authors@R: person("Bill", "Denney", email="wdenney@humanpredictions.com", role=c("aut", "cre"), comment=c(ORCID="0000-0002-5759-428X"))
+Description: Generate tables, listings, and figures to assist with reporting noncompartmental analysis results.
+Depends: R (>= 3.5.1)
+Imports:
+  lattice
+License: AGPL-3
+URL: https://github.com/billdenney/pknca.reporting
+BugReports: https://github.com/billdenney/pknca.reporting/issues
+NeedsCompilation: no
+Encoding: UTF-8
+LazyData: true
