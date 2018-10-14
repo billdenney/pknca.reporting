@@ -9,6 +9,7 @@
 #' @param panel.formula.update Updates to the \code{panel.formula} to
 #' simplify modifications without having to fully specify the formula.
 #' @return A trellis object of the plot(s)
+#' @importFrom lattice xyplot
 #' @export
 plot.PKNCAconc <- function(x, ...,
                            groups=x$subject,
@@ -37,3 +38,9 @@ plot.PKNCAconc <- function(x, ...,
   call.args[["data"]] <- x$data
   do.call(lattice::xyplot, call.args)
 }
+
+#' @rdname plot.PKNCAconc
+#' @importFrom graphics plot
+#' @export
+plot.PKNCAdata <- function(x, ...)
+  graphics::plot(x$conc, ...)
