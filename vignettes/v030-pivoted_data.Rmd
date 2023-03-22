@@ -1,0 +1,67 @@
+---
+title: "Pivoting and summarizing data for presentation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Pivoting and summarizing data for presentation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(pknca.reporting)
+```
+
+# Pivoting Data
+
+Sometimes presentation of data is easier when it is wide.  That may be done with
+the `pivot_wider()` function for a `PKNCAconc` object.  Pivoting the data will,
+by default, pivot to one group (i.e. subject and the other grouping factors) per
+row and one column per nominal time point.  It will not work without the nominal
+times given with the `time.nominal` argument to the PKNCAconc object.
+
+After the data are pivoted, they may be summarized.  Summaries work on each
+group across subjects.
+
+# Example
+
+```{r}
+# Setup the data, in this case the nominal time is manually assigned by
+# inspection of the raw data.
+d_nom <-
+  as.data.frame(datasets::Theoph) %>%
+  mutate(
+    time_nom =
+      case_when(
+        Time == 0~0,
+        Time < 0.49~0.25,
+        Time < 0.9~0.5,
+        Time < 1.5~1,
+        Time < 3~2,
+        Time < 4.5~3.5,
+        Time < 6~5,
+        Time < 8~7,
+        Time < 10~9,
+        Time < 20~12,
+        Time < 25~24,
+        TRUE~NA_real_
+      )
+  )
+
+# Make a PKNCAconc object (just like normal while ensuring that the time.nominal
+# argument has been given)
+o_conc <- PKNCAconc(d_nom, formula = conc~Time|Subject, time.nominal = "time_nom")
+# Pivot the data wider
+d_conc_pivot <- pivot_wider.PKNCAconc(o_conc)
+knitr::kable(d_conc_pivot)
+
+# Summarize that pivoted data
+d_conc_pivot_summary <- summary(d_conc_pivot)
+knitr::kable(d_conc_pivot_summary)
+```
